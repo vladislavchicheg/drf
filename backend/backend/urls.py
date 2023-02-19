@@ -20,9 +20,9 @@ from todoapp.views import ProjectViewSet, TODOViewSet
 from userapp.views import UserViewSet
 
 router = DefaultRouter()
-router.register("users", UserViewSet)
-router.register("projects", ProjectViewSet)
-router.register("todos", TODOViewSet)
+router.register("user", UserViewSet, basename="user")
+router.register("projects", ProjectViewSet, basename="projects")
+router.register("todos", TODOViewSet, basename="ustodoser")
 
 urlpatterns = [
     path("admin/", admin.site.urls),
