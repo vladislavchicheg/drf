@@ -1,4 +1,6 @@
+from rest_framework import status
 from rest_framework.pagination import LimitOffsetPagination
+from rest_framework.response import Response
 from rest_framework.viewsets import ModelViewSet
 
 from .filters import ProjectFilter, TODOFilter
@@ -16,10 +18,15 @@ class TODOViewSet(ModelViewSet):
     pagination_class = TODOLimitOffsetPagination
     filterset_class = TODOFilter
 
-    def delete(self):
-        instance = self.get_object()
-        instance.is_active = False
-        instance.save()
+    def destroy(self, request, *args, **kwargs):
+        try:
+            instance = self.get_object()
+            instance.is_active = False
+            instance.save()
+        except:
+            return Response(status=status.HTTP_404_NOT_FOUND)
+        else:
+            return Response(status=status.HTTP_204_NO_CONTENT)
 
 
 class ProjectLimitOffsetPagination(LimitOffsetPagination):

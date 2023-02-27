@@ -5,12 +5,11 @@ from .models import TODO, Project
 
 class TODOFilter(filters.FilterSet):
     project = filters.NumberFilter()
+    data_create = filters.DateFromToRangeFilter()
 
     class Meta:
         model = TODO
-        fields = [
-            "project",
-        ]
+        fields = ["project", "data_create"]
 
 
 class ProjectFilter(filters.FilterSet):
