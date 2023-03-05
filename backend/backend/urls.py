@@ -24,7 +24,7 @@ from userapp.views import UserViewSet
 router = DefaultRouter()
 router.register("user", UserViewSet, basename="user")
 router.register("projects", ProjectViewSet, basename="projects")
-router.register("todos", TODOViewSet, basename="ustodoser")
+router.register("todos", TODOViewSet, basename="todos")
 
 urlpatterns = [
     path("admin/", admin.site.urls),
