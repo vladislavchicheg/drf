@@ -3,7 +3,7 @@ from rest_framework.pagination import LimitOffsetPagination
 
 from .filters import UserFilter
 from .models import User
-from .serializers import UserSerializer
+from .serializers import UserSerializer, UserSerializerV2
 
 
 class UserLimitOffsetPagination(LimitOffsetPagination):
@@ -15,3 +15,8 @@ class UserViewSet(mixins.ListModelMixin, mixins.RetrieveModelMixin, mixins.Updat
     queryset = User.objects.all()
     pagination_class = UserLimitOffsetPagination
     filterset_class = UserFilter
+
+    def get_serializer_class(self):
+        if self.request.version == "2.0":
+            return UserSerializerV2
+        return UserSerializer
