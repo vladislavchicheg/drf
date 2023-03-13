@@ -16,7 +16,7 @@ const Menu = () => {
   <li className="nav-item">
   <Link to='/todos'>TODOs</Link>
   </li>
-  
+  <li><Link to='/projects/create'>Create project</Link></li>
 </ul></nav>
     )
 }

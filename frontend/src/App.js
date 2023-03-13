@@ -15,7 +15,8 @@ import UserTODO from "./components/UserTODO"
 import {HashRouter, BrowserRouter, Switch, Route, Link} from "react-router-dom";
 import NotFound404 from './components/NotFound404';
 import LoginForm from './components/Auth';
-
+import ProjectForm from './components/ProjectForm';
+import TODOForm from './components/TODOForm';
 class App extends React.Component{
 
   constructor(props) {
@@ -60,6 +61,58 @@ class App extends React.Component{
     this.setState({'token': token}, ()=>this.load_data())
   }
 
+  createTODO(project, text, author) {
+
+    const headers = this.get_headers()
+    axios.post(`http://127.0.0.1:8000/api/projects/`, {'project': project, 'text': text, 'author': author} , {headers})
+    .then(response => {
+        this.loadData();
+    })
+    .catch(error => {
+        console.log(error)
+    })
+}
+
+deleteTODO(id) {
+
+const headers = this.get_headers()
+axios.delete(`http://127.0.0.1:8000/api/todos/${id}/`, {headers})
+.then(response => {
+    this.setState( {
+        'todos': this.state.todos.filter((todo) => todo.id != id)
+    })
+})
+.catch(error => {
+    console.log(error)
+})
+}
+
+createProject(title, authors) {
+
+    const headers = this.get_headers()
+    axios.post(`http://127.0.0.1:8000/api/projects/`, {'name': title, 'authors': authors} , {headers})
+    .then(response => {
+        this.loadData();
+    })
+    .catch(error => {
+        console.log(error)
+    })
+}
+
+deleteProject(id) {
+
+  const headers = this.getHeaders()
+  axios.delete(`http://127.0.0.1:8000/api/projects/${id}/`, {headers})
+  .then(response => {
+      this.setState( {
+          'projects': this.state.projects.filter((project) => project.id != id)
+      })
+  })
+  .catch(error => {
+      console.log(error)
+  })
+}
+
   load_data() {
     const headers = this.get_headers()
       axios.get('http://127.0.0.1:8000/api/user/',{headers}).then(response => {
@@ -91,6 +144,8 @@ class App extends React.Component{
 
   }
 
+  
+
   render() {
     return(
         <div className="container">
@@ -104,8 +159,10 @@ onClick={()=>this.logout()}>Logout</button> : <Link to='/login'>Login</Link>}
           
             <Switch>
               <Route exact path='/' component={()=> <UserList users={this.state.users}/>}/>
-              <Route exact path='/todos' component={() => <TODOList todos = {this.state.todos}/>} />
-              <Route  exact path='/projects' component={()=> <ProjectsList projects={this.state.projects}/>}/>
+              <Route exact path='/todos' component={() => <TODOList todos = {this.state.todos} deleteTODO={(id) => this.deleteTODO(id)}/>} />
+              <Route path='/todos/create' exact component={() => <TODOForm todos = {this.state.project} createTODO={(project, text, author) => this.createProject(project, text, author)}/>}/>
+              <Route  exact path='/projects' component={()=> <ProjectsList projects={this.state.projects} deleteProject={(id) => this.deleteProject(id)}/>}/>
+              <Route path='/projects/create' exact component={() => <ProjectForm authors = {this.state.authors} createProject={(name, authors) => this.createProject(name, authors)}/>}/>
               <Route path='/project/:id' component={() => <ProjectUsers users = {this.state.users}/>} />
               <Route path='/project/:id' component={() => <ProjectTODOs todos = {this.state.todos}/>} />
               <Route path='/user/:id' component={() => <UserTODO todos = {this.state.todos}/>} /> 
