@@ -1,4 +1,4 @@
-# from django.contrib.auth.models import User
+from django.contrib.auth.models import User
 from mixer.backend.django import mixer
 from rest_framework import status
 from rest_framework.test import APIRequestFactory, APITestCase, force_authenticate
