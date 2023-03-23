@@ -1,0 +1,40 @@
+version: '3.3'
+
+services:
+  db:
+    image: postgres:13.0
+    privileged: true
+    ports:
+      - 5432:5432
+    environment:
+      POSTGRES_USER: drf
+      POSTGRES_PASSWORD: drf1548!
+      POSTGRES_DB: drf_gb
+
+  backend:
+    build:
+      context: .
+    expose:
+      - 8080
+    command: bash -c "
+      ./wait-for-postgres.sh db
+      && python manage.py migrate
+      && python manage.py userscreate
+      && gunicorn backend.wsgi -b 0.0.0.0:8080
+      "
+    depends_on:
+      - db
+
+  nginx:
+    build: ./nginx
+    ports:
+      - 8000:80
+    depends_on:
+      - backend
+
+  frontend:
+    build: ./frontend
+    ports:
+      - 80:80
+    depends_on:
+      - nginx

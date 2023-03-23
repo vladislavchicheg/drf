@@ -1,0 +1,8 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project version="4">
+  <component name="SshConfigs">
+    <configs>
+      <sshConfig authType="PASSWORD" connectionConfig="{&quot;hostKeyVerifier&quot;:{&quot;hashKnownHosts&quot;:true},&quot;serverAliveInterval&quot;:300}" host="80.78.253.200" id="63536fa1-4386-41b2-be17-e36298ca2e62" port="22" nameFormat="DESCRIPTIVE" username="root" useOpenSSHConfig="true" />
+    </configs>
+  </component>
+</project>
